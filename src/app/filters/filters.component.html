@@ -1,0 +1,11 @@
+<div class="well" *ngIf="filters">
+  Filters:
+
+  <button type="button" 
+    (click)="toogleFilter(filter)"
+    [class.btn-primary]="isActive(filter)"
+    [class.btn-secondary]="isActive(filter)" 
+    class="btn btn-sm" *ngFor="let filter of filters">
+    {{ filter.name }}
+  </button>
+</div>

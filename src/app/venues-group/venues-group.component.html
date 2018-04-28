@@ -1,0 +1,8 @@
+<li class="list-group-item">
+  {{ group.type }}
+  <ul class="list-group">
+      <li class="list-group-item" *ngFor="let item of group.items">
+          <app-venue-detail [venue]="item.venue"></app-venue-detail>
+      </li>
+  </ul>
+</li>
