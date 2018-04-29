@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { VenueSearchService } from './../services/venue-search.service';
-import { AuthService } from './../services/auth.service';
+import { GeoLocationService } from './../services/geo-location.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -9,29 +9,48 @@ import { AuthService } from './../services/auth.service';
   styleUrls: ['./search-bar.component.css']
 })
 export class SearchBarComponent implements OnInit {
-  isLogged = false;
-  radius: 10;
+
+  filters: any = {
+    radius: 10,
+    near: '',
+    query: ''
+  };
+
+  currentLocation: any;
 
   constructor(
     private venueSearchService: VenueSearchService,
-    private authService: AuthService
+    private geoLocationService: GeoLocationService
   ) {
-    this.isLogged = this.authService.isLogged();
-    this.authService.getObservable().subscribe(logged => this.isLogged = logged);
   }
 
   ngOnInit() {
+    this.geoLocationService.getCurrentPosition().then(p => this.currentLocation = p);
+    this.geoLocationService.watchPosition().subscribe(position => {
+      this.currentLocation = position;
+      if (!this.filters.near) {
+        this.filter();
+      }
+    });
   }
 
-  setRadius(radius) {
-    this.venueSearchService.mergeFilters({radius});
+  searchCurrentPosition() {
+    this.filters.near = '';
+    this.filter();
   }
 
-  auth() {
-    this.authService.auth();
+  cleanQuery() {
+    this.filters.query = '';
+    this.filter();
   }
 
-  logout() {
-    this.authService.logout();
+  filter() {
+    const filters = {...this.filters};
+    if (!this.filters.near) {
+        filters.position = this.currentLocation;
+        delete filters.near;
+    }
+
+    this.venueSearchService.setFilters(filters);
   }
 }

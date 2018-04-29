@@ -28,6 +28,10 @@ export class AuthService {
     );
   }
 
+  getToken() {
+    return this.token;
+  }
+
   setToken(token) {
     localStorage.setItem(this.tokenKey, token);
     this.token = token;

@@ -1,8 +1,8 @@
 
 <div *ngIf="result">
-    <h5><strong>{{result.totalResults}}</strong> suggestions based on <strong>{{result.headerFullLocation}}</strong></h5>
     <app-filters [filters]="result.suggestedFilters?.filters"></app-filters>
-    <ul class="list-group">
-      <app-venues-group [group]="group" *ngFor="let group of groups"></app-venues-group>
-    </ul>
+
+    <h5><strong>{{result.totalResults}}</strong> suggestions based on <strong>{{result.headerFullLocation}}</strong></h5>
+    <hr />
+    <app-venues-group [group]="group" *ngFor="let group of groups"></app-venues-group>
 </div>

@@ -15,7 +15,7 @@ export class GeoLocationService {
     return !!navigator.geolocation;
   }
 
-  getCurrentPosition(): Promise<Object> {
+  getCurrentPosition(): Promise<any> {
       return new Promise<Object>((resolve, reject) => {
           if (this.isSupported()) {
             navigator.geolocation.getCurrentPosition(position => resolve(position));

@@ -1,32 +1,17 @@
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <div class="navbar-icon-container">
-        <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn">
-          <i class="fa fa-bars fa-lg white"></i>
-        </a>
-        <a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn">
-          <i class="fa fa-search fa-lg white"></i>
-        </a>
-      </div>
-      <a class="navbar-brand" href="#">Adyen - Recommendations</a>
+<app-navbar></app-navbar>
+
+<div class="container-fluid">
+  <div class="row search-bar-container">
+    <div class="col-md-12 well well-sm">
+      <app-search-bar></app-search-bar>
     </div>
   </div>
-</div>
-
-<div id="container">
-  <div id="sidebar">
-    <div class="sidebar-wrapper">
-      <app-search-bar></app-search-bar>
+  <div class="row">
+    <div class="col-md-5 sidebar">
       <app-venues-list></app-venues-list>
     </div>
-  </div>
-  <div id="map"></div>
-</div>
-<div id="loading">
-  <div class="loading-indicator">
-    <div class="progress progress-striped active">
-      <div class="progress-bar progress-bar-info progress-bar-full"></div>
+    <div class="col-md-7 main">
+      <app-map></app-map>
     </div>
   </div>
 </div>

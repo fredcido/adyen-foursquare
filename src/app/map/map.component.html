@@ -1,0 +1,7 @@
+<div #gmap class="map">
+  <agm-map *ngIf="mapCenter" [latitude]="mapCenter.latitude" [longitude]="mapCenter.longitude" [zoom]="14">
+    <agm-marker *ngFor="let item of venues" [latitude]="item.venue.location.lat" [longitude]="item.venue.location.lng">
+        <agm-info-window>{{item.venue.name}}</agm-info-window>
+    </agm-marker>
+  </agm-map>
+</div>

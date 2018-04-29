@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { GeoLocationService } from './../services/geo-location.service';
 import { VenueSearchService } from './../services/venue-search.service';
 
 @Component({
@@ -13,19 +12,13 @@ export class VenuesListComponent implements OnInit {
   groups: null;
 
   constructor(
-    private venueSearchService: VenueSearchService,
-    private geoLocationService: GeoLocationService
+    private venueSearchService: VenueSearchService
   ) { }
 
   ngOnInit() {
     this.venueSearchService.getObservable().subscribe(result => {
-      console.log(result);
       this.result = result;
       this.groups = result.groups;
-    });
-
-    this.geoLocationService.watchPosition().subscribe(position => {
-      this.venueSearchService.mergeFilters({position});
     });
   }
 }

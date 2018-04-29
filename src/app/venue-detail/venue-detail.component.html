@@ -1,5 +1,9 @@
-<h4>{{venue.name}}</h4>
-<small>{{venue.location.formattedAddress}}</small>
+<h4>
+    <a href="#">
+        {{venue.name}}
+    </a>
+</h4>
+<address>{{venue.location.formattedAddress}}</address>
 <p>
-    <span class="label label-default" *ngFor="let category of venue.categories">{{category.name}}</span>
+    <span class="label label-info" *ngFor="let category of venue.categories">{{category.name}}</span>
 </p>
