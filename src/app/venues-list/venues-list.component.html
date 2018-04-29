@@ -1,8 +1,19 @@
-
 <div *ngIf="result">
-    <app-filters [filters]="result.suggestedFilters?.filters"></app-filters>
+    <app-filters [result]="result"></app-filters>
 
-    <h5><strong>{{result.totalResults}}</strong> suggestions based on <strong>{{result.headerFullLocation}}</strong></h5>
+    <h5>
+        <strong>{{result.totalResults}}</strong> suggestions based on
+        <strong>{{result.headerFullLocation}}</strong>
+    </h5>
     <hr />
     <app-venues-group [group]="group" *ngFor="let group of groups"></app-venues-group>
+
+    <div class="text-center">
+        <button type="button" (click)="moreResults()" class="btn btn-primary">Show more results</button>
+    </div>
+</div>
+
+<div class="alert alert-warning" role="alert" *ngIf="!result">
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    There are no suggestions found yet
 </div>

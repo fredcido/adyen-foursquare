@@ -21,13 +21,15 @@ export class MapComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.geoLocationService.watchPosition().subscribe(position => {
-      // this.mapCenter = position.coords;
-    });
 
     this.venueSearchService.getObservable().subscribe(result => {
-      console.log(result);
       this.venues = result.groups.reduce((items, group) => items.concat(group.items), []);
+
+      if (this.venues.length) {
+        const item = this.venues[0];
+        this.mapCenter.latitude = item.venue.location.lat;
+        this.mapCenter.longitude = item.venue.location.lng;
+      }
     });
   }
 }

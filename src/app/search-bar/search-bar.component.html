@@ -1,9 +1,9 @@
-<form class="navbar-form navbar-left" #searchForm="ngForm" role="search">
+<form class="navbar-form navbar-left form-inline" #searchForm="ngForm" role="search">
     <div class="form-group">
         <div class="input-group">
-                <input type="text" [(ngModel)]="filters.query" (change)="filter()" name="query" class="form-control" placeholder="Search by term...">
+                <input type="text" [(ngModel)]="filters.query" (ngModelChange)="change()" name="query" class="form-control" placeholder="Search by term...">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" (click)="cleanQuery()">
+                <button class="btn btn-default" [disabled]="!filters.query" type="button" (click)="cleanQuery()">
                     <i class="fa fa-times"></i>
                 </button>
             </span>
@@ -11,19 +11,25 @@
     </div>
     <div class="form-group">
         <div class="input-group">
-            <input type="text" [(ngModel)]="filters.near" name="near" (change)="filter()" class="form-control" placeholder="Your current location">
+            <input type="text" [(ngModel)]="filters.near" name="near" (ngModelChange)="change()" class="form-control" placeholder="Your current location">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" (click)="searchCurrentPosition()">
+                <button class="btn btn-default" type="button" [disabled]="!filters.near" (click)="searchCurrentPosition()">
                     <i class="fa fa-location-arrow"></i>
                 </button>
             </span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="checkbox">
         <label>Radius:</label>
-        <mat-slider class="radius-slider" [max]="100" [min]="1" [step]="1" thumbLabel name="radius" (change)="filter()" [(ngModel)]="filters.radius" tickInterval="10"
-            [(ngModel)]="radius">
+        <mat-slider 
+            class="radius-slider" 
+            [max]="100" 
+            [min]="1" 
+            [step]="1" 
+            name="radius" 
+            (ngModelChange)="change()" 
+            [(ngModel)]="filters.radius">
         </mat-slider>
-        {{filters.radius}}KM
+        {{filters.radius}} Km
     </div>
 </form>

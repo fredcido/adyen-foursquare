@@ -19,6 +19,10 @@ export class VenuesListComponent implements OnInit {
     this.venueSearchService.getObservable().subscribe(result => {
       this.result = result;
       this.groups = result.groups;
-    });
+    }, () => this.result = null);
+  }
+
+  moreResults() {
+    this.venueSearchService.next();
   }
 }

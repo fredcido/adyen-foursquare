@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 import { VenueSearchService } from './../services/venue-search.service';
 import { GeoLocationService } from './../services/geo-location.service';
+import { AuthService } from './../services/auth.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -17,10 +21,12 @@ export class SearchBarComponent implements OnInit {
   };
 
   currentLocation: any;
+  modelChanged: Subject<any> = new Subject<any>();
 
   constructor(
     private venueSearchService: VenueSearchService,
-    private geoLocationService: GeoLocationService
+    private geoLocationService: GeoLocationService,
+    private authService: AuthService
   ) {
   }
 
@@ -32,6 +38,15 @@ export class SearchBarComponent implements OnInit {
         this.filter();
       }
     });
+    this.authService.getObservable().subscribe(logged => this.filter());
+
+    this.modelChanged
+            .debounceTime(300)
+            .subscribe(model => this.filter());
+  }
+
+  change() {
+    this.modelChanged.next();
   }
 
   searchCurrentPosition() {

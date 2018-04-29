@@ -22,6 +22,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { MapComponent } from './map/map.component';
 
 import { MAPS_KEY } from './app.config';
+import { LoadingComponent } from './loading/loading.component';
+import { LoadingService } from './services/loading.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { MAPS_KEY } from './app.config';
     VenuesGroupComponent,
     FiltersComponent,
     NavbarComponent,
-    MapComponent
+    MapComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,8 @@ import { MAPS_KEY } from './app.config';
     VenueSearchService,
     GeoLocationService,
     PostMessageService,
-    AuthService
+    AuthService,
+    LoadingService
   ],
   bootstrap: [AppComponent]
 })

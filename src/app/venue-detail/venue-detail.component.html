@@ -1,9 +1,9 @@
 <h4>
-    <a href="#">
+    <a [href]="'https://foursquare.com/v/' + venue.id" target="_blank">
         {{venue.name}}
     </a>
 </h4>
 <address>{{venue.location.formattedAddress}}</address>
 <p>
-    <span class="label label-info" *ngFor="let category of venue.categories">{{category.name}}</span>
+    <span class="label label-warning" *ngFor="let category of venue.categories">{{category.name}}</span>
 </p>

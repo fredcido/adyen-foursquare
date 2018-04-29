@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import { AuthService } from './auth.service';
+import { LoadingService } from './loading.service';
 import { ROOT_API, CLIENT_ID, CLIENT_SECRET } from './../app.config';
 
 const EXPLORE = 'venues/explore';
@@ -15,10 +16,14 @@ const SEARCH = 'venues/search';
 export class VenueSearchService {
   private subject = new Subject<Object>();
   private filters = {};
+  private limit = 10;
+  private offset = 0;
+  private lastResponse;
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private loadingService: LoadingService
   ) { }
 
   search(params = {}): Observable<any> {
@@ -28,14 +33,15 @@ export class VenueSearchService {
 
   buildFilters(params) {
     const defaults: any = {
-        v: '20180323'
+      v: '20180323',
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+      limit: this.limit,
+      offset: this.offset
     };
 
     if (this.authService.isLogged()) {
       defaults.oauth_token = this.authService.getToken();
-    } else {
-      defaults.client_id = CLIENT_ID;
-      defaults.client_secret = CLIENT_SECRET;
     }
 
     if (params.position) {
@@ -58,17 +64,42 @@ export class VenueSearchService {
       return this.subject.asObservable();
   }
 
-  setFilters(params = {}) {
-    this.filters = params;
-    this.performSearch(this.filters);
+  setFilters(params = {}, placeholder = 'search') {
+    this.filters[placeholder] = params;
+    this.performSearch();
+  }
+
+  getFilters() {
+    return Object.values(this.filters).reduce((p, v) => ({...p, ...v}), {});
   }
 
   mergeFilters(params = {}) {
     this.filters = {...this.filters, ...params};
-    this.performSearch(this.filters);
+    this.performSearch();
   }
 
-  performSearch(params) {
-    this.search(params).subscribe(res => this.subject.next(res.response));
+  performSearch() {
+    this.offset = 0;
+    const params = this.getFilters();
+    this.loadingService.setLoading(true);
+    this.search(params).subscribe(res => {
+      this.lastResponse = res.response;
+      this.subject.next(res.response);
+      this.loadingService.setLoading(false);
+    });
+  }
+
+  next() {
+    this.offset += this.limit;
+    const params = this.getFilters();
+    this.loadingService.setLoading(true);
+    this.search(params).subscribe(res => {
+      let response = res.response;
+      if (this.lastResponse) {
+        response = {...this.lastResponse, ...response};
+      }
+      this.subject.next(response);
+      this.loadingService.setLoading(false);
+    });
   }
 }
