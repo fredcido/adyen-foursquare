@@ -56,7 +56,7 @@ export class AuthService {
       widthCredentials: true
     };
 
-    this.http.get(`${TOKEN_ENDPOINT}/access_token`, options)
+    this.http.get(`/access_token`, options)
           .subscribe((res: any) => {
               if (res.access_token) {
                 this.setToken(res.access_token);
