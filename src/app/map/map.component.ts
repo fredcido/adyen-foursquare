@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { GeoLocationService } from './../services/geo-location.service';
 import { VenueSearchService } from './../services/venue-search.service';
 
 @Component({
@@ -16,7 +15,6 @@ export class MapComponent implements OnInit {
   venues = [];
 
   constructor(
-    private geoLocationService: GeoLocationService,
     private venueSearchService: VenueSearchService
   ) { }
 

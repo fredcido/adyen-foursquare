@@ -5,7 +5,7 @@ This project was developed using [Angular 5](https://angular.io/) and all of its
 * [NPM](https://www.npmjs.com/)
 * [Angular CLI](https://github.com/angular/angular-cli)
 
-The project might request Oauth2 access to your Foursquare profile in order to manage your tasks. The applicaton is also hosted at http://adyen.fredericoestrela.com.
+The project might request Oauth2 access to your Foursquare profile in order to manage your tasks. The applicaton is also hosted at https://adyen-foursquare.herokuapp.com/.
 
 ## Installing packages
 

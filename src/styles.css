@@ -30,11 +30,15 @@ body {
 }
 
 /* Hide for mobile, show later */
-.sidebar {
+.main {
   display: none;
 }
 
 @media (min-width: 768px) {
+  .main {
+    display: block;
+  }
+
   .sidebar {
     /* position: fixed;
     top: 51px; */
