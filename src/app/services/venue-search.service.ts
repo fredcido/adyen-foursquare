@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
@@ -82,11 +82,17 @@ export class VenueSearchService {
     this.offset = 0;
     const params = this.getFilters();
     this.loadingService.setLoading(true);
-    this.search(params).subscribe(res => {
-      this.lastResponse = res.response;
-      this.subject.next(res.response);
-      this.loadingService.setLoading(false);
-    });
+    this.search(params).subscribe(
+      res => {
+        this.lastResponse = res.response;
+        this.subject.next(res.response);
+        this.loadingService.setLoading(false);
+      },
+      () => {
+        this.loadingService.setLoading(false);
+        this.subject.next(null);
+      }
+    );
   }
 
   next() {
@@ -96,7 +102,18 @@ export class VenueSearchService {
     this.search(params).subscribe(res => {
       let response = res.response;
       if (this.lastResponse) {
-        response = {...this.lastResponse, ...response};
+        if (response.groups) {
+          response.groups.forEach(group => {
+            const originGroup = this.lastResponse.groups.find(g => group.type === g.type);
+            if (originGroup) {
+              originGroup.items = originGroup.items.concat(group.items);
+            } else {
+              this.lastResponse.groups.push(group);
+            }
+          });
+
+          response = this.lastResponse;
+        }
       }
       this.subject.next(response);
       this.loadingService.setLoading(false);

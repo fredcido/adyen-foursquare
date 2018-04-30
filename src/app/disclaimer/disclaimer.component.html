@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Disclaimer</h1>
+<div mat-dialog-content>
+  <div class="alert alert-info" role="alert">
+      <span class="fa fa-info" aria-hidden="true"></span>
+      This is a PoC (Proof of Concept) developed using <a href="https://angular.io/" target="_blank"><strong>Angular 5</strong></a> 
+      and <a href="https://developer.foursquare.com/docs" target="_blank"><strong>Foursquare</strong></a> API. 
+      It does not implement 100% of the API features due to some
+      Rate limitations, such as Venue's further details and images. You can login into your Foursquare account using the top right <strong>Login</strong> button, thus the recommendations will be 
+      personalized according to your preferences and your friend's preference. Enjoy it!
+  </div>
+</div>
+<div mat-dialog-actions class="btn-group pull-right" role="group">
+  <button type="button" class="btn btn-success" (click)="close()">
+    <i class="fa fa-check"></i>
+    Got it!
+  </button>
+</div>

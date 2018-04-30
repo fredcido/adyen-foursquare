@@ -23,6 +23,11 @@ export class MapComponent implements OnInit {
   ngOnInit() {
 
     this.venueSearchService.getObservable().subscribe(result => {
+      if (!result) {
+        this.venues = [];
+        return;
+      }
+
       this.venues = result.groups.reduce((items, group) => items.concat(group.items), []);
 
       if (this.venues.length) {

@@ -1,0 +1,8 @@
+{
+  "/access_token*": {
+    "target": "https://foursquare.com/oauth2/",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

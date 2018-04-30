@@ -1,3 +1,8 @@
+<div class="alert alert-info" role="alert" *ngIf="!isLogged">
+    <span class="fa fa-info" aria-hidden="true"></span>
+    You can have personalized recommendations if you log in using the button at the top right corner.
+</div>
+
 <div *ngIf="result">
     <app-filters [result]="result"></app-filters>
 
@@ -8,12 +13,12 @@
     <hr />
     <app-venues-group [group]="group" *ngFor="let group of groups"></app-venues-group>
 
-    <div class="text-center">
+    <div class="text-center" *ngIf="!isLoading && totalResults < result.totalResults">
         <button type="button" (click)="moreResults()" class="btn btn-primary">Show more results</button>
     </div>
 </div>
 
 <div class="alert alert-warning" role="alert" *ngIf="!result">
     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-    There are no suggestions found yet
+    There are no suggestions found
 </div>

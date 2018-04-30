@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class VenueDetailComponent implements OnInit {
 
-  @Input() venue: Object;
+  @Input() venue: any;
 
   constructor() { }
 

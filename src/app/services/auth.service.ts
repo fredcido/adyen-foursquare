@@ -1,28 +1,35 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import { ROOT_API, CLIENT_ID, CLIENT_SECRET } from './../app.config';
+import {
+  ROOT_API,
+  CLIENT_ID,
+  CLIENT_SECRET,
+  TOKEN_ENDPOINT } from './../app.config';
 import { PostMessageService } from './post-message.service';
 
-const AUTH_URL = 'https://foursquare.com/oauth2/authenticate';
+const AUTH_URL = 'https://foursquare.com/oauth2';
 
 @Injectable()
 export class AuthService {
   private subject = new Subject<Object>();
   protected token;
+  protected code;
   protected popup;
   tokenKey = 'token';
 
   constructor(
-    private postMessageService: PostMessageService
+    private postMessageService: PostMessageService,
+    private http: HttpClient,
   ) {
     this.token = localStorage.getItem(this.tokenKey);
 
     this.postMessageService.getObservable().subscribe(
         message => {
-          if (message.token) {
-            this.setToken(message.token);
+          if (message.code) {
+            this.setCode(message.code);
           }
         }
     );
@@ -30,6 +37,31 @@ export class AuthService {
 
   getToken() {
     return this.token;
+  }
+
+  setCode(code) {
+    this.code = code;
+
+    const params = {
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+      grant_type: 'authorization_code',
+      redirect_uri: location.href,
+      code: this.code
+    };
+
+    const options = {
+      params,
+      headers: null,
+      widthCredentials: true
+    };
+
+    this.http.get(`${TOKEN_ENDPOINT}/access_token`, options)
+          .subscribe((res: any) => {
+              if (res.access_token) {
+                this.setToken(res.access_token);
+              }
+          });
   }
 
   setToken(token) {
@@ -53,7 +85,7 @@ export class AuthService {
     const top = (screen.height / 2) - (height / 2);
 
     const redirect_uri = location.href;
-    const url = `${AUTH_URL}?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${redirect_uri}`;
+    const url = `${AUTH_URL}/authenticate?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${redirect_uri}`;
     const params = `scrollbars=yes, width=${width}, height=${height}, top=${top}, left=${left}`;
     this.popup = window.open(url, 'Adyen Foursquare - OAuth', params);
 
@@ -69,12 +101,12 @@ export class AuthService {
     this.subject.next(false);
   }
 
-  setReturnCode(token) {
+  setReturnCode(code) {
     if (window.opener) {
-      window.opener.postMessage({token}, '*');
+      window.opener.postMessage({code}, '*');
       window.close();
     } else {
-      this.setToken(token);
+      this.setCode(code);
     }
   }
 

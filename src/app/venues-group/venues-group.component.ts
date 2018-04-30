@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class VenuesGroupComponent implements OnInit {
 
-  @Input() group: Object;
+  @Input() group: any;
 
   constructor() { }
 
